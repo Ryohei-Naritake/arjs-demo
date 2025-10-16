@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Random Number Demo</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+	<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <!-- Hiroマーカー使用 -->
+      <a-marker preset="hiro">  
+        <!-- ランダム値表示用テキスト -->
+        <a-entity
+          id="randomText"
+          text="value: ?; color: yellow; align: center; width: 4"
+          position="0 0.5 0"
+        ></a-entity>
+      </a-marker>
+
+      <!-- カメラ -->
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      const marker = document.querySelector("#hiroMarker");
+      const textEntity = document.querySelector("#randomText");
+
+      // マーカーが見つかったときにランダムな値を表示
+      marker.addEventListener("markerFound", () => {
+        const randomValue = Math.floor(Math.random() * 100) + 1; // 1〜100の乱数
+        textEntity.setAttribute("text", "value", `🎲 ${randomValue}`);
+        console.log("Marker found! Random value:", randomValue);
+      });
+
+      // マーカーが見えなくなったら「？」に戻す
+      marker.addEventListener("markerLost", () => {
+        textEntity.setAttribute("text", "value", "?");
+      });
+    </script>
+  </body>
+</html>
